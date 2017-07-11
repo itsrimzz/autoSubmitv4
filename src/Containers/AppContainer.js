@@ -11,6 +11,8 @@ import * as Actions from '../Actions/Actions';
 // Import components
 import AppHeader from '../components/AppHeader/AppHeader';
 import Editor from '../components/Editor/Editor';
+import ActionMenu from '../components/ActionMenu/ActionMenu';
+import DataTable from '../components/DataTable/DataTable';
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -21,6 +23,8 @@ class AppContainer extends React.Component {
       <div>
         <AppHeader />
         <Editor />
+        <ActionMenu />
+        <DataTable />
       </div>
     );
   }
