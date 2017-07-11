@@ -1,0 +1,8 @@
+
+export const STATUS = {
+  PENDING: 'PENDING',
+  DOING: 'DOING',
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
+  ERROR: 'ERROR'
+};

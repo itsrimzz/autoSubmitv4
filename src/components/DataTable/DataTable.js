@@ -13,6 +13,19 @@ export default class Datatable extends React.Component {
     super(props);
   }
 
+  getRows = () => {
+    return this.props.links.map((link, index) => {
+      return (
+        <TableRow>
+          <TableRowColumn>{index}</TableRowColumn>
+          <TableRowColumn>{link.url}</TableRowColumn>
+          <TableRowColumn>{link.status}</TableRowColumn>
+          <TableRowColumn>{link.count}</TableRowColumn>
+        </TableRow>
+      )
+    });
+  }
+
   render() {
     return (
       <div className="data-table">
@@ -27,30 +40,7 @@ export default class Datatable extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>http://google.com</TableRowColumn>
-                <TableRowColumn>Success</TableRowColumn>
-                <TableRowColumn>2</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>http://google.com</TableRowColumn>
-                <TableRowColumn>Success</TableRowColumn>
-                <TableRowColumn>2</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>http://google.com</TableRowColumn>
-                <TableRowColumn>Success</TableRowColumn>
-                <TableRowColumn>2</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>http://google.com</TableRowColumn>
-                <TableRowColumn>Success</TableRowColumn>
-                <TableRowColumn>2</TableRowColumn>
-              </TableRow>
+              {this.getRows()}
             </TableBody>
           </Table>
         </div>

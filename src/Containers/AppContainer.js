@@ -14,17 +14,33 @@ import Editor from '../components/Editor/Editor';
 import ActionMenu from '../components/ActionMenu/ActionMenu';
 import DataTable from '../components/DataTable/DataTable';
 
+// import utils
+import {convertStringToLinks} from '../Util/util';
+
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  processLinks = () => {
+    const text = this.refs.editor.state.value;
+    const urls = convertStringToLinks(text);
+    this.props.actions.addLinks(urls);
+    this.refs.editor.setState({value: ''})
+  }
+
   render() {
     return (
       <div>
         <AppHeader />
-        <Editor />
-        <ActionMenu />
-        <DataTable />
+        <Editor 
+          ref="editor"
+        />
+        <ActionMenu
+          processLinks={this.processLinks}
+          />
+        <DataTable 
+          links={this.props.links}/>
       </div>
     );
   }
