@@ -7,6 +7,9 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+import CircularProgress from 'material-ui/CircularProgress';
+
+import {STATUS} from '../../constants';
 
 export default class Datatable extends React.Component {
   constructor(props) {
@@ -19,7 +22,7 @@ export default class Datatable extends React.Component {
         <TableRow>
           <TableRowColumn>{index}</TableRowColumn>
           <TableRowColumn>{link.url}</TableRowColumn>
-          <TableRowColumn>{link.status}</TableRowColumn>
+          <TableRowColumn>{link.status === STATUS.DOING ? <CircularProgress /> : link.status}</TableRowColumn>
           <TableRowColumn>{link.count}</TableRowColumn>
         </TableRow>
       )
