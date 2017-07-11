@@ -7,15 +7,20 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 
 // import components
-import App from './App';
+import AppContainer from './Containers/AppContainer';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const initialStoreData = {};
 const store = configureStore(initialStoreData);
 
 const route = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  </MuiThemeProvider>
 );
 
 ReactDOM.render(
