@@ -15,32 +15,72 @@ import ActionMenu from '../components/ActionMenu/ActionMenu';
 import DataTable from '../components/DataTable/DataTable';
 
 // import utils
-import {convertStringToLinks} from '../Util/util';
+import { convertStringToLinks } from '../Util/util';
+// import autoSubmit from '../autoSubmit';
+import { requestManager } from '../requestManager';
+
+import { STATUS, THRESHOLD } from '../constants';
 
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  processLinks = () => {
+  process = () => {
+    let index = 0;
+    for (let link of this.props.links) {
+      if (link.status === STATUS.PENDING) {
+        this.props.actions.updateStatus({ index: index, status: STATUS.DOING })
+        break;
+      } else if (link.status === STATUS.DOING) {
+        requestManager.post('http://auto-submit.herokuapp.com/', JSON.stringify(link.url),
+          (response) => {
+            if (response.data.response) {
+              this.props.actions.updateStatus({ index: index, status: STATUS.SUCCESS })
+            } else {
+              if (link.count < THRESHOLD) {
+                this.props.actions.updateCount({ index: index, count: link.count + 1 })
+              } else {
+                this.props.actions.updateStatus({ index: index, status: STATUS.FAIL })
+              }
+            }
+          }, (error) => {
+            console.log('error: autoSubmit api: ', error);
+            if (link.count < THRESHOLD) {
+              this.props.actions.updateCount({ index: index, count: link.count + 1 })
+            } else {
+              this.props.actions.updateStatus({ index: index, status: STATUS.ERROR })
+            }
+          });
+        break;
+      }
+      index++;
+    }
+  }
+
+  processLinksHandler = () => {
     const text = this.refs.editor.state.value;
     const urls = convertStringToLinks(text);
     this.props.actions.addLinks(urls);
-    this.refs.editor.setState({value: ''})
+    this.refs.editor.setState({ value: '' })
+  }
+
+  componentDidUpdate = () => {
+    this.process();
   }
 
   render() {
     return (
       <div>
         <AppHeader />
-        <Editor 
+        <Editor
           ref="editor"
-        />
-        <ActionMenu
-          processLinks={this.processLinks}
           />
-        <DataTable 
-          links={this.props.links}/>
+        <ActionMenu
+          processLinks={this.processLinksHandler}
+          />
+        <DataTable
+          links={this.props.links} />
       </div>
     );
   }
