@@ -33,7 +33,7 @@ class AppContainer extends React.Component {
         this.props.actions.updateStatus({ index: index, status: STATUS.DOING })
         break;
       } else if (link.status === STATUS.DOING) {
-        requestManager.post('http://auto-submit.herokuapp.com/', JSON.stringify(link.url),
+        requestManager.post('https://auto-submit.herokuapp.com/', JSON.stringify(link.url),
           (response) => {
             if (response.data.response) {
               this.props.actions.updateStatus({ index: index, status: STATUS.SUCCESS })
@@ -69,6 +69,17 @@ class AppContainer extends React.Component {
     this.process();
   }
 
+  retryLink = (index) => {
+    console.log(index);
+    if(typeof index === 'number' && index >= 0) {
+      this.props.actions.resetLink(index)
+    }
+  }
+
+  resetApp = () => {
+    this.props.actions.resetApp();
+  }
+
   render() {
     return (
       <div>
@@ -78,9 +89,12 @@ class AppContainer extends React.Component {
           />
         <ActionMenu
           processLinks={this.processLinksHandler}
+          resetApp={this.resetApp}
           />
         <DataTable
-          links={this.props.links} />
+          links={this.props.links}
+          retryLink={this.retryLink}
+        />
       </div>
     );
   }

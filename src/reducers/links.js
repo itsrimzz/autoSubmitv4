@@ -1,4 +1,5 @@
 // import * as types from '../../../constants/ActionTypes';
+import {STATUS} from '../constants';
 
 export default function links (state = [], action) {
   switch (action.type) {
@@ -28,6 +29,21 @@ export default function links (state = [], action) {
         }
       })
       return newState;
+    case 'RESET_LINK':
+      newState = state.map((link, index) => {
+        if(index === action.data) {
+          return {
+            ...link,
+            count: 0,
+            status: STATUS.PENDING
+          }
+        } else {
+          return link;
+        }
+      })
+      return newState;
+    case 'RESET_APP':
+      return [];
     default:
       return state;
   }

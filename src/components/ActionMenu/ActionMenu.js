@@ -17,7 +17,11 @@ export default class ActionMenu extends React.Component {
             label="Process"
             primary={true} 
             onClick={this.props.processLinks}/>
-          <RaisedButton label="Reset" secondary={true} />
+          <RaisedButton
+            label="Reset"
+            secondary={true}
+            onClick={this.props.resetApp}
+            />
         </div>
       </div>
     );

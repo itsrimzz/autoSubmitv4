@@ -18,3 +18,11 @@ export function updateStatus (data) {
 export function updateCount (data) {
   return {type: 'UPDATE_COUNT', data: data};
 }
+
+export function resetLink (index) {
+  return {type: 'RESET_LINK', data: index};
+}
+
+export function resetApp () {
+  return {type: 'RESET_APP'}
+}

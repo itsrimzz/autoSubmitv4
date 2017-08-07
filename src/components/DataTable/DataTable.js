@@ -8,7 +8,7 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 import CircularProgress from 'material-ui/CircularProgress';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import {STATUS} from '../../constants';
 
 export default class Datatable extends React.Component {
@@ -24,6 +24,11 @@ export default class Datatable extends React.Component {
           <TableRowColumn>{link.url}</TableRowColumn>
           <TableRowColumn>{link.status === STATUS.DOING ? <CircularProgress /> : link.status}</TableRowColumn>
           <TableRowColumn>{link.count}</TableRowColumn>
+          <TableRowColumn>{link.status === STATUS.FAIL || link.status === STATUS.ERROR ?
+            <RaisedButton
+            label="Retry"
+            primary={true} 
+            onClick={() => this.props.retryLink(index)}/>:<span/> }</TableRowColumn>
         </TableRow>
       )
     });
@@ -40,6 +45,7 @@ export default class Datatable extends React.Component {
                 <TableHeaderColumn>Link</TableHeaderColumn>
                 <TableHeaderColumn>Response</TableHeaderColumn>
                 <TableHeaderColumn>Count</TableHeaderColumn>
+                <TableHeaderColumn>Options</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
