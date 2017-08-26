@@ -13,6 +13,7 @@ import AppHeader from '../components/AppHeader/AppHeader';
 import Editor from '../components/Editor/Editor';
 import ActionMenu from '../components/ActionMenu/ActionMenu';
 import DataTable from '../components/DataTable/DataTable';
+import ApiSelector from '../components/ApiSelector/ApiSelector';
 
 // import utils
 import { convertStringToLinks } from '../Util/util';
@@ -20,10 +21,16 @@ import { convertStringToLinks } from '../Util/util';
 import { requestManager } from '../requestManager';
 
 import { STATUS, THRESHOLD } from '../constants';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      api: 0
+    };
   }
 
   process = () => {
@@ -33,7 +40,10 @@ class AppContainer extends React.Component {
         this.props.actions.updateStatus({ index: index, status: STATUS.DOING })
         break;
       } else if (link.status === STATUS.DOING) {
-        requestManager.post('https://auto-submit.herokuapp.com/', JSON.stringify(link.url),
+        requestManager.post('/', JSON.stringify({
+          url: link.url,
+          api: this.state.api
+        }),
           (response) => {
             if (response.data.response) {
               this.props.actions.updateStatus({ index: index, status: STATUS.SUCCESS })
@@ -80,6 +90,8 @@ class AppContainer extends React.Component {
     this.props.actions.resetApp();
   }
 
+  handleApiChange = (event, index, value) => this.setState({ api: value });
+
   render() {
     return (
       <div>
@@ -87,6 +99,10 @@ class AppContainer extends React.Component {
         <Editor
           ref="editor"
           />
+        <ApiSelector
+        api={this.state.api}
+        handleChange={this.handleApiChange}
+        /> 
         <ActionMenu
           processLinks={this.processLinksHandler}
           resetApp={this.resetApp}

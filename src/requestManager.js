@@ -35,7 +35,7 @@ class AxiosRequestManager {
     // API call for public meeting need not to be csrf secured
     return axios({
       url: url,
-      timeout: 30000, // TODO: We should be able to update the settings by passing it as arguments
+      timeout: 60000, // TODO: We should be able to update the settings by passing it as arguments
       method: 'post',
       // crossDomain: true,
       responseType: responseType,
