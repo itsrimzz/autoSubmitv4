@@ -5,6 +5,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Toggle from 'material-ui/Toggle';
+
 // import actions
 import * as Actions from '../Actions/Actions';
 
@@ -29,7 +31,8 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      api: 0
+      api: 0,
+      isOptimistic: false
     };
   }
 
@@ -42,7 +45,8 @@ class AppContainer extends React.Component {
       } else if (link.status === STATUS.DOING) {
         requestManager.post('/', JSON.stringify({
           url: link.url,
-          api: this.state.api
+          api: this.state.api,
+          is_optimistic: this.state.isOptimistic
         }),
           (response) => {
             if (response.data.response) {
@@ -92,10 +96,19 @@ class AppContainer extends React.Component {
 
   handleApiChange = (event, index, value) => this.setState({ api: value });
 
+  setOptimistic = (ev, isChecked) => this.setState({isOptimistic: isChecked})
+
   render() {
+    console.log(requestManager)
     return (
       <div>
         <AppHeader />
+        <div style={{width: '1em', marginTop: '1em'}}>
+          <Toggle
+            label="Optimistic Submission"
+            onToggle={this.setOptimistic}
+          />
+        </div>
         <Editor
           ref="editor"
           />

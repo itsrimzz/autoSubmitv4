@@ -19,7 +19,7 @@ export default class Editor extends React.Component {
       <div className="editor">
         <TextField
           hintText=""
-          floatingLabelText="Enter Emails"
+          floatingLabelText={this.props.label ? this.props.label : 'Enter Emails'}
           multiLine={true}
           rows={1}
           className="text-area"
